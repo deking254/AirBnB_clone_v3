@@ -18,7 +18,7 @@ def handle_teardown(exception):
 @app.errorhandler(404)
 def not_found(exception):
     data = {"error": "Not found"}
-    return jsonify(data), 400
+    return jsonify(data), 404
 
 
 if __name__ == "__main__":
