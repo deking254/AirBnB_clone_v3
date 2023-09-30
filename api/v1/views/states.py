@@ -5,7 +5,7 @@ from models import storage
 from models.state import State
 import json
 import flask
-from flask import abort
+from flask import abort, jsonify
 
 @app_views.route('/states', strict_slashes=False)
 def states():
@@ -19,7 +19,8 @@ def states():
 @app_views.route('/states/<string:state_id>', strict_slashes=False)
 def state(state_id):
     """retrieves a specific state object"""
-    state = storage.get(State, state_id)
+    states = storage.all(State)
+    state = states.get('State.' + state_id)
     if state is None:
         data = {"error": "Not found"}
         return data, 404
