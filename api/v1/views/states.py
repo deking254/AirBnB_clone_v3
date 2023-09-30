@@ -68,4 +68,4 @@ def update(state_id):
             r = State()
         except Exception as e:
             abort(400, { "Not a JSON"})
-    return , 200
+    return "{}", 200
