@@ -7,6 +7,7 @@ import json
 import flask
 from flask import abort, jsonify
 
+
 @app_views.route('/states', strict_slashes=False)
 def states():
     """retrieves all states"""
@@ -16,15 +17,16 @@ def states():
         states_array.append(states.get(sts).to_dict())
     return states_array
 
+
 @app_views.route('/states/<string:state_id>', strict_slashes=False)
 def state(state_id):
     """retrieves a specific state object"""
     states = storage.all(State)
     state = states.get('State.' + state_id)
     if state is None:
-        data = {"error": "Not found"}
-        return data, 404
+        abort(404)
     return jsonify(state.to_dict()), 200
+
 
 @app_views.delete('/states/<state_id>', strict_slashes=False)
 def delete_state(state_id):
@@ -34,7 +36,8 @@ def delete_state(state_id):
         storage.save()
         return {}, 200
     else:
-        return {"error": "Not found"}, 404
+        abort(404)
+
 
 @app_views.post('/states', strict_slashes=False)
 def create():
@@ -51,6 +54,7 @@ def create():
     else:
         return "Missing name", 400
     return r, 201
+
 
 @app_views.put('/states/<state_id>', strict_slashes=False)
 def update(state_id):
