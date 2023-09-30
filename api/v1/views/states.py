@@ -24,14 +24,13 @@ def state(state_id):
     states = storage.all(State)
     state = states.get('State.' + state_id)
     if state is None:
-        abort(404)
+        abort(404, )
     return jsonify(state.to_dict()), 200
 
 
 @app_views.delete('/states/<state_id>', strict_slashes=False)
 def delete_state(state_id):
     state = storage.get(State, state_id)
-    print(state)
     if state:
         storage.delete()
         storage.save()
@@ -46,15 +45,15 @@ def create():
     try:
         req.json()
     except json.JSONDecodeError:
-        return "Not a JSON", 400
+        abort(400, {"Not a JSON"})
     if req.get("name"):
         r = State()
         r.name = req.get("name")
         storage.new(r)
         storage.save()
     else:
-        return "Missing name", 400
-    return r, 201
+        abort(400, {'Missing name'})
+    return jsonify(r.to_dict()), '201'
 
 
 @app_views.put('/states/<state_id>', strict_slashes=False)
@@ -67,7 +66,6 @@ def update(state_id):
         try:
             json.dumps(req)
             r = State()
-            print(dir(r))
         except Exception as e:
-            return "Not a JSON", 400
-    return "were", 200
+            abort(400, { "Not a JSON"})
+    return , 200
