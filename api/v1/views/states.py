@@ -30,7 +30,6 @@ def state(state_id):
 @app_views.delete('/states/<state_id>', strict_slashes=False)
 def delete_state(state_id):
     state = storage.get(State, state_id)
-    print(state)
     if state:
         storage.delete(state)
         storage.save()
@@ -64,7 +63,6 @@ def update(state_id):
             ignoreKeys = ['id', 'created_at', 'updated_at']
             for key in req.items():
                 if key not in ignoreKeys:
-                    print(key[0])
                     setattr(state, key[0], key[1])
             storage.save()
         else:
