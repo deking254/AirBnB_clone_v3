@@ -3,7 +3,7 @@
 import os
 from models import storage
 from flask.app import Flask
-from flask import make_response
+from flask import make_response, jsonify
 from api.v1.views import app_views
 app = Flask(__name__)
 app.register_blueprint(app_views)
@@ -18,7 +18,7 @@ def handle_teardown(exception):
 @app.errorhandler(404)
 def not_found(exception):
     data = {"error": "Not found"}
-    return data, 400
+    return jsonify(data), 400
 
 
 if __name__ == "__main__":
