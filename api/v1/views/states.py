@@ -24,17 +24,18 @@ def state(state_id):
     states = storage.all(State)
     state = states.get('State.' + state_id)
     if state is None:
-        abort(404, )
-    return jsonify(state.to_dict()), 200
+        abort(404)
+    return jsonify(state.to_dict())
 
 
 @app_views.delete('/states/<state_id>', strict_slashes=False)
 def delete_state(state_id):
     state = storage.get(State, state_id)
+    print(state)
     if state:
-        storage.delete()
+        storage.delete(state)
         storage.save()
-        return {}, 200
+        return jsonify({}), 200
     else:
         abort(404)
 
@@ -42,17 +43,16 @@ def delete_state(state_id):
 @app_views.post('/states', strict_slashes=False)
 def create():
     req = flask.request.get_json()
-    try:
-        req.json()
-    except json.JSONDecodeError:
-        abort(400, {"Not a JSON"})
-    if req.get("name"):
-        r = State()
-        r.name = req.get("name")
-        storage.new(r)
-        storage.save()
+    if req:
+        if req.get("name"):
+            r = State()
+            r.name = req.get("name")
+            storage.new(r)
+            storage.save()
+        else:
+            abort(400, {'Missing name'})
     else:
-        abort(400, {'Missing name'})
+        abort(400, {"Not a JSON"})
     return jsonify(r.to_dict()), '201'
 
 
