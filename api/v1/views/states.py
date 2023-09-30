@@ -17,7 +17,6 @@ def states():
         states_array.append(states.get(sts).to_dict())
     return states_array
 
-
 @app_views.route('/states/<string:state_id>', strict_slashes=False)
 def state(state_id):
     """retrieves a specific state object"""
@@ -60,12 +59,16 @@ def create():
 def update(state_id):
     state = storage.get(State, state_id)
     if state:
-        abort(404)
-    else:
         req = flask.request.get_json()
-        try:
-            json.dumps(req)
-            r = State()
-        except Exception as e:
-            abort(400, { "Not a JSON"})
-    return "{}", 200
+        if req:
+            ignoreKeys = ['id', 'created_at', 'updated_at']
+            for key in req.items():
+                if key not in ignoreKeys:
+                    print(key[0])
+                    setattr(state, key[0], key[1])
+            storage.save()
+        else:
+            abort(400, {"Not a JSON"})
+    else:
+        abort(404)
+    return jsonify(state.to_dict()), '200'
