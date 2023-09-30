@@ -1,17 +1,19 @@
 #!/usr/bin/python3
 """a functon to get status of API"""
 import os
+from models import storage
 from flask.app import Flask
 from flask import make_response
-app = Flask(__name__)
-from models import storage
 from api.v1.views import app_views
+app = Flask(__name__)
 app.register_blueprint(app_views)
+
 
 @app.teardown_appcontext
 def handle_teardown(exception):
     """handle @app.teardown_appcontext"""
     storage.close()
+
 
 @app.errorhandler(404)
 def not_found(exception):
