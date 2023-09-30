@@ -31,6 +31,7 @@ def state(state_id):
 @app_views.delete('/states/<state_id>', strict_slashes=False)
 def delete_state(state_id):
     state = storage.get(State, state_id)
+    print(state)
     if state:
         storage.delete()
         storage.save()
@@ -43,8 +44,8 @@ def delete_state(state_id):
 def create():
     req = flask.request.get_json()
     try:
-        json.dumps(req)
-    except Exception as e:
+        req.json()
+    except json.JSONDecodeError:
         return "Not a JSON", 400
     if req.get("name"):
         r = State()
