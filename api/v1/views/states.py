@@ -19,15 +19,13 @@ def states():
     return states_array
 
 
-@app_views.route('/states/<string:state_id>', strict_slashes=False)
+@app_views.route('/states/<state_id>', strict_slashes=False)
 def state(state_id):
     """retrieves a specific state object"""
-    states = storage.all(State)
-    state = states.get('State.' + state_id)
+    state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    return jsonify(state.to_dict())
-
+    return jsonify(state.to_dict()), 200
 
 @app_views.delete('/states/<state_id>', strict_slashes=False)
 def delete_state(state_id):
