@@ -71,17 +71,17 @@ class FileStorage:
 
     def get(self, cls, id):
         """Returns the object based on the class and its ID"""
-        classes = self.all(cls)
         if cls and id:
-            if cls == 'State':
+            classes = self.all(cls)
+            if cls == 'State' or cls == State:
                 specific_class = classes.get("State." + id)
-            elif cls == 'City':
+            elif cls == 'City' or cls == City:
                 specific_class = classes.get("City." + id)
-            elif cls == 'User':
+            elif cls == 'User' or cls == User:
                 specific_class = classes.get("User." + id)
-            elif cls == 'Place':
+            elif cls == 'Place' or cls == Place:
                 specific_class = classes.get("Place." + id)
-            elif cls == 'Amenity':
+            elif cls == 'Amenity' or cls == Amenity:
                 specific_class = classes.get("Amenity." + id)
             return specific_class
         else:
@@ -90,8 +90,15 @@ class FileStorage:
 
     def count(self, cls=None):
         """Returns the number of objects in storage matching cls"""
-        classes = self.all(cls)
-        i = 0
-        for specific_class in classes:
-            i = i + 1
-        return i
+        if cls:
+            classes = self.all(cls)
+            i = 0
+            for specific_class in classes:
+                i = i + 1
+            return i
+        else:
+            classes = self.all()
+            j = 0
+            for clas in classes:
+                j = j + 1
+            return j
