@@ -72,16 +72,17 @@ class FileStorage:
     def get(self, cls, id):
         """Returns the object based on the class and its ID"""
         classes = self.all(cls)
-        if cls == State:
-            specific_class = classes.get("State." + id)
-        elif cls == City:
-            specific_class = classes.get("City." + id)
-        elif cls == User:
-            specific_class = classes.get("User." + id)
-        elif cls == Place:
-            specific_class = classes.get("Place." + id)
-        elif cls == Amenity:
-            specific_class = classes.get("Amenity." + id)
+        if cls and id:
+            if cls == 'State':
+                specific_class = classes.get("State." + id)
+            elif cls == 'City':
+                specific_class = classes.get("City." + id)
+            elif cls == 'User':
+                specific_class = classes.get("User." + id)
+            elif cls == 'Place':
+                specific_class = classes.get("Place." + id)
+            elif cls == 'Amenity':
+                specific_class = classes.get("Amenity." + id)
         else:
             return None
 

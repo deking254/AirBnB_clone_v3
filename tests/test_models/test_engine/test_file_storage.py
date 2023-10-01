@@ -131,7 +131,7 @@ class TestFilStorage(unittest.TestCase):
         self.assertIs(None, models.storage.get("blah", "blah"))
         self.assertIs(newUser, models.storage.get(User, newUser.id))
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
                      "not testing db storage")
     def test_count(self):
         """add new object to db"""
