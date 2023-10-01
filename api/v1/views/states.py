@@ -9,7 +9,7 @@ import flask
 from flask import abort, jsonify
 
 
-@app_views.route('/states', strict_slashes=False)
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
 def states():
     """retrieves all states"""
     states_array = []
@@ -19,7 +19,7 @@ def states():
     return []
 
 
-@app_views.route('/states/<state_id>', strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def state(state_id):
     """retrieves a specific state object"""
     state = storage.get(State, state_id)
@@ -27,7 +27,7 @@ def state(state_id):
         abort(404)
     return state.to_dict(), '200'
 
-@app_views.delete('/states/<state_id>', strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(state_id):
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         state = storage.get(State, state_id)
@@ -41,7 +41,7 @@ def delete_state(state_id):
     return jsonify({}), 200
 
 
-@app_views.post('/states', strict_slashes=False)
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create():
     req = flask.request.get_json()
     if req:
@@ -57,7 +57,7 @@ def create():
     return jsonify(r.to_dict()), '201'
 
 
-@app_views.put('/states/<state_id>', strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update(state_id):
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         state = storage.get(State, state_id)
