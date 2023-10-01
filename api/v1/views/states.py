@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """return states(s)"""
+import os
 from api.v1.views import app_views
 from models import storage
 from models.state import State
@@ -27,10 +28,12 @@ def state(state_id):
         abort(404)
     return jsonify(state.to_dict())
 
-
 @app_views.delete('/states/<state_id>', strict_slashes=False)
 def delete_state(state_id):
-    state = storage.get(State, state_id)
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        state = storage.get(State, state_id)
+    else:
+        state = storage.get('State', state_id)
     if state:
         storage.delete(state)
         storage.save()
@@ -57,7 +60,10 @@ def create():
 
 @app_views.put('/states/<state_id>', strict_slashes=False)
 def update(state_id):
-    state = storage.get(State, state_id)
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        state = storage.get(State, state_id)
+    else:
+        state = storage.get('State', state_id)
     if state:
         req = flask.request.get_json()
         if req:

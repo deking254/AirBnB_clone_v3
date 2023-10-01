@@ -83,10 +83,10 @@ class FileStorage:
                 specific_class = classes.get("Place." + id)
             elif cls == 'Amenity':
                 specific_class = classes.get("Amenity." + id)
+            return specific_class
         else:
             return None
 
-        return specific_class
 
     def count(self, cls=None):
         """Returns the number of objects in storage matching cls"""
