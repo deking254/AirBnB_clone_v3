@@ -78,7 +78,7 @@ class DBStorage:
     def get(self, cls, id):
         """Returns the object based on the class and its ID"""
         if cls and id:
-            t = 'State' + "." + id
+            t = cls.__name__ + "." + id
             classes = self.all(cls);
             for clas in classes:
                 if clas == t:

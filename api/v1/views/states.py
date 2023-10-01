@@ -33,9 +33,9 @@ def delete_state(state_id):
     if state:
         storage.delete(state)
         storage.save()
-        return jsonify({}), 200
     else:
         abort(404)
+    return jsonify({}), 200
 
 
 @app_views.post('/states', strict_slashes=False)
@@ -62,7 +62,7 @@ def update(state_id):
         if req:
             ignoreKeys = ['id', 'created_at', 'updated_at']
             for key in req.items():
-                if key not in ignoreKeys:
+                if key[0] not in ignoreKeys:
                     setattr(state, key[0], key[1])
             storage.save()
         else:
