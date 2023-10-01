@@ -17,6 +17,7 @@ def states():
         states_array.append(states.get(sts).to_dict())
     return states_array
 
+
 @app_views.route('/states/<string:state_id>', strict_slashes=False)
 def state(state_id):
     """retrieves a specific state object"""
