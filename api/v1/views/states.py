@@ -16,7 +16,7 @@ def states():
     states = storage.all(State)
     for sts in states:
         states_array.append(states.get(sts).to_dict())
-    return states_array
+    return []
 
 
 @app_views.route('/states/<state_id>', strict_slashes=False)
