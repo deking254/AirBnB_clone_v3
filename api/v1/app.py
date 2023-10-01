@@ -7,6 +7,7 @@ from flask import make_response, jsonify
 from api.v1.views import app_views
 app = Flask(__name__)
 app.register_blueprint(app_views)
+app.url_map.strict_slashes = False
 
 
 @app.teardown_appcontext
@@ -24,7 +25,8 @@ def not_found(exception):
 if __name__ == "__main__":
     hst = os.getenv('HBNB_API_HOST')
     prt = os.getenv('HBNB_API_PORT')
-    if hst and prt:
-        app.run(host=hst, port=prt, threaded=True)
-    else:
-        app.run(host='0.0.0.0', port='5000', threaded=True)
+    if not hst:
+        hst = '0.0.0.0'
+    if not prt:
+        prt = '5000'
+    app.run(host=hst, port=prt, threaded=True)
