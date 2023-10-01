@@ -28,6 +28,7 @@ def state(state_id):
         abort(404)
     return jsonify(state.to_dict())
 
+
 @app_views.delete('/states/<state_id>', strict_slashes=False)
 def delete_state(state_id):
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
