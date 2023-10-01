@@ -24,8 +24,8 @@ def state(state_id):
     """retrieves a specific state object"""
     state = storage.get(State, state_id)
     if state is None:
-        abort(404)
-    return jsonify(state.to_dict()), 200
+        abort(400)
+    return jsonify(state.to_dict()), '200'
 
 @app_views.delete('/states/<state_id>', strict_slashes=False)
 def delete_state(state_id):
