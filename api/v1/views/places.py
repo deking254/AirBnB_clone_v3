@@ -63,9 +63,8 @@ def create_place(city_id):
                 if city:
                     r = Place()
                     r.city_id = city_id
-                    r.name = req.get("name")
-                    for key in req:
-                        setattr(r, key, req.get(key))
+                    for key[0] in req.items():
+                        setattr(r, key[0], key[1])
                     storage.new(r)
                     storage.save()
                 else:
@@ -88,7 +87,7 @@ def update_place(place_id):
     if place:
         req = flask.request.get_json()
         if req:
-            ignoreKeys = ['id', 'created_at', 'updated_at']
+            ignoreKeys = ['id', 'created_at', 'user_id', 'city_id', 'updated_at']
             for key in req.items():
                 if key[0] not in ignoreKeys:
                     setattr(place, key[0], key[1])
