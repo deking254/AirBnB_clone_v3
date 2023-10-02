@@ -74,22 +74,19 @@ def create_city(state_id):
     return jsonify(r.to_dict()), '201'
 
 
-@app_views.route('/cities/<city_id>',
-                 methods=['PUT'],
-                 strict_slashes=False)
+@app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 def update_city(city_id):
     req = flask.request.get_json()
     city = storage.get(City, city_id)
     if city:
-        req = flask.request.get_json()
         if req:
-            ignoreKeys = ['id', 'created_at', 'updated_at']
-            for key in req.items():
-                if key[0] not in ignoreKeys:
-                    setattr(city, key[0], key[1])
+            ignore_keys = ['id', 'created_at', 'updated_at']
+            for key, value in req.items():
+                if key not in ignore_keys:
+                    setattr(city, key, value)
             storage.save()
         else:
-            abort(400, {"Not a JSON"})
+            abort(400, description='Not a JSON')
     else:
         abort(404)
-    return jsonify(city.to_dict()), '200'
+    return jsonify(city.to_dict()), 200
