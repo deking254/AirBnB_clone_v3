@@ -33,7 +33,7 @@ def cities(state_id):
 def get_city(city_id):
     city = storage.get(City, city_id)
     if city:
-        return jsonify(city.to_dict())
+        return jsonify(city.to_dict()), 200
     else:
         abort(404)
 
@@ -52,8 +52,8 @@ def delete_city(city_id):
 
 
 @app_views.route('/states/<state_id>/cities',
-                methods=['POST'],
-                strict_slashes=False)
+                 methods=['POST'],
+                 strict_slashes=False)
 def create_city(state_id):
     req = flask.request.get_json()
     state = storage.get(State, state_id)
@@ -75,8 +75,8 @@ def create_city(state_id):
 
 
 @app_views.route('/cities/<city_id>',
-               methods=['PUT'],
-               strict_slashes=False)
+                 methods=['PUT'],
+                 strict_slashes=False)
 def update_city(city_id):
     req = flask.request.get_json()
     city = storage.get(City, city_id)
