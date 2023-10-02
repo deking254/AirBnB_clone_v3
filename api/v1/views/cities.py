@@ -9,7 +9,9 @@ import flask
 from flask import abort, jsonify
 
 
-@app_views.route('/states/<state_id>/cities', strict_slashes=False)
+@app_views.route('/states/<state_id>/cities',
+                 methods=['GET'],
+                 strict_slashes=False)
 def cities(state_id):
     """retrieves a specific state object"""
     cities = storage.all(City)
@@ -22,10 +24,12 @@ def cities(state_id):
                 ctys.append(cities[city].to_dict())
     if ctys == []:
         abort(404)
-    return ctys
+    return jsonify(ctys), 200
 
 
-@app_views.route('/cities/<city_id>', strict_slashes=False)
+@app_views.route('/cities/<city_id>',
+                 methods=['GET'],
+                 strict_slashes=False)
 def get_city(city_id):
     city = storage.get(City, city_id)
     if city:
@@ -34,7 +38,9 @@ def get_city(city_id):
         abort(404)
 
 
-@app_views.delete('/cities/<city_id>', strict_slashes=False)
+@app_views.route('/cities/<city_id>',
+                 methods=['DELETE'],
+                 strict_slashes=False)
 def delete_city(city_id):
     city = storage.get(City, city_id)
     if city:
@@ -45,7 +51,9 @@ def delete_city(city_id):
         abort(404)
 
 
-@app_views.post('/states/<state_id>/cities', strict_slashes=False)
+@app_views.route('/states/<state_id>/cities',
+                methods=['POST'],
+                strict_slashes=False)
 def create_city(state_id):
     req = flask.request.get_json()
     state = storage.get(State, state_id)
@@ -54,6 +62,7 @@ def create_city(state_id):
             if state:
                 r = City()
                 r.name = req.get("name")
+                setattr(r, "state_id", state_id)
                 storage.new(r)
                 storage.save()
             else:
@@ -65,7 +74,9 @@ def create_city(state_id):
     return jsonify(r.to_dict()), '201'
 
 
-@app_views.put('/cities/<city_id>', strict_slashes=False)
+@app_views.route('/cities/<city_id>',
+               methods=['PUT'],
+               strict_slashes=False)
 def update_city(city_id):
     req = flask.request.get_json()
     city = storage.get(City, city_id)
