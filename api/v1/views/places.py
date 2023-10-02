@@ -87,7 +87,11 @@ def update_place(place_id):
     if place:
         req = flask.request.get_json()
         if req:
-            ignoreKeys = ['id', 'created_at', 'user_id', 'city_id', 'updated_at']
+            ignoreKeys = ['id',
+                          'created_at',
+                          'user_id',
+                          'city_id',
+                          'updated_at']
             for key in req.items():
                 if key[0] not in ignoreKeys:
                     setattr(place, key[0], key[1])
