@@ -27,7 +27,10 @@ def state(state_id):
         abort(404)
     return jsonify(state.to_dict()), '200'
 
-@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+
+@app_views.route('/states/<state_id>',
+                 methods=['DELETE'],
+                 strict_slashes=False)
 def delete_state(state_id):
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         state = storage.get(State, state_id)
