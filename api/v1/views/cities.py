@@ -80,7 +80,3 @@ def update_city(city_id):
 
     storage.save()
     return jsonify(city.to_dict())
-
-
-if __name__ == '__main__':
-    pass
